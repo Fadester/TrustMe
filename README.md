@@ -6,3 +6,10 @@
 - git clone https://github.com/Fadester/TrustMe/
 - cd TrustMe/
 - sudo bash TrustMe
+
+# Disclaimer
+- This tool was developed for demonstration purposes only
+
+- Don't do anything illegal!
+
+- Bleibt brav Jungs =)
